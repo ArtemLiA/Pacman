@@ -16,12 +16,18 @@ public:
     ~Ghost();
     void render(sf::RenderWindow &window) override;
     void setState(GhostState* newState);
+    void setPacman(Pacman* pPacman);
+    bool isChasing() const;
+    void setChasingStatus(bool isChasing);
+    void setDangerousStatus(bool isDangerous);
+    sf::Vector2f get_position();
 
     HouseMode* getHouseMode();
     ChaseMode* getChaseMode();
     ScatterMode* getScatterMode();
     EatenMode* getEatenMode();
     FrightenedMode* getFrightenedMode();
+
 protected:
     GhostState* currentState;
     HouseMode* houseMode;
@@ -30,6 +36,9 @@ protected:
     EatenMode* eatenMode;
     FrightenedMode* frightenedMode;
 
+    Pacman* pacman;
+
+    bool is_dangerous;
     bool is_chasing;
     sf::Color color;
     const float ghost_speed = 90.f;
@@ -68,27 +77,23 @@ protected:
     Ghost* ghost;
 public:
     explicit GhostState(Ghost* pGhost);
-    virtual void superPacGumEaten() = 0;
-    virtual void timerModeOver() = 0;
-    virtual void timerFrightenedMode() = 0;
-    virtual void eaten() = 0;
-    virtual void outsideHouse() = 0;
-    virtual void insideHouse() = 0;
-    virtual void computeNextDir() = 0;
-    virtual sf::Vector2f getTargetPosition() = 0;
+    virtual void superPacGumEaten();
+    virtual void timerModeOver();
+    virtual void timerFrightenedMode();
+    virtual void eaten();
+    virtual void outsideHouse();
+    virtual void insideHouse();
+    virtual void computeNextDir();
+    virtual sf::Vector2f getTargetPosition();
+    virtual void setDangerousStatus();
 };
 
 class HouseMode: public GhostState{
 public:
     explicit HouseMode(Ghost* pGhost);
-    void superPacGumEaten() override;
-    void timerModeOver() override;
-    void timerFrightenedMode() override;
-    void eaten() override;
     void outsideHouse() override;
-    void insideHouse() override;
-    void computeNextDir() override;
     sf::Vector2f getTargetPosition() override;
+    void setDangerousStatus() override;
 };
 
 class ChaseMode: public GhostState{
@@ -96,12 +101,8 @@ public:
     explicit ChaseMode(Ghost* pGhost);
     void superPacGumEaten() override;
     void timerModeOver() override;
-    void timerFrightenedMode() override;
-    void eaten() override;
-    void outsideHouse() override;
-    void insideHouse() override;
-    void computeNextDir() override;
     sf::Vector2f getTargetPosition() override;
+    void setDangerousStatus() override;
 };
 
 class ScatterMode: public GhostState{
@@ -109,36 +110,23 @@ public:
     explicit ScatterMode(Ghost* pGhost);
     void superPacGumEaten() override;
     void timerModeOver() override;
-    void timerFrightenedMode() override;
-    void eaten() override;
-    void outsideHouse() override;
-    void insideHouse() override;
-    void computeNextDir() override;
     sf::Vector2f getTargetPosition() override;
+    void setDangerousStatus() override;
 };
 
 class EatenMode: public GhostState{
 public:
     explicit EatenMode(Ghost* pGhost);
-    void superPacGumEaten() override;
-    void timerModeOver() override;
-    void timerFrightenedMode() override;
-    void eaten() override;
-    void outsideHouse() override;
     void insideHouse() override;
-    void computeNextDir() override;
     sf::Vector2f getTargetPosition() override;
+    void setDangerousStatus() override;
 };
 
 class FrightenedMode: public GhostState{
 public:
     explicit FrightenedMode(Ghost* pGhost);
-    void superPacGumEaten() override;
-    void timerModeOver() override;
     void timerFrightenedMode() override;
     void eaten() override;
-    void outsideHouse() override;
-    void insideHouse() override;
-    void computeNextDir() override;
     sf::Vector2f getTargetPosition() override;
+    void setDangerousStatus() override;
 };
