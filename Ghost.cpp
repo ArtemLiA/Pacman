@@ -1,7 +1,7 @@
 #include "Ghost.h"
 #include <iostream>
 
-Ghost::Ghost(float x, float y, float radius): MovingEntity(x, y){
+Ghost::Ghost(float x, float y, float radius, Pacman* pPacman): MovingEntity(x, y){
     is_chasing = false;
     ghost_radius = radius;
 
@@ -12,7 +12,9 @@ Ghost::Ghost(float x, float y, float radius): MovingEntity(x, y){
     frightenedMode = new FrightenedMode(this);
     currentState = houseMode;
 
-    pacman = nullptr;
+    strategy = nullptr;
+
+    pacman = pPacman;
     is_chasing = false;
     is_dangerous = false;
 }
@@ -82,6 +84,14 @@ FrightenedMode* Ghost::getFrightenedMode(){
     return frightenedMode;
 }
 
+sf::Vector2f Ghost::getChasePosition(){
+    return strategy->getChasePosition();
+}
+
+sf::Vector2f Ghost::getChaseScatterPosition(){
+    return strategy->getChaseScatterPosition();
+}
+
 
 //GHOST STATE
 GhostState::GhostState(Ghost* pGhost) {
@@ -126,7 +136,7 @@ void ChaseMode::timerModeOver(){
     ghost->setState(ghost->getScatterMode());
 }
 sf::Vector2f ChaseMode::getTargetPosition(){
-    return {0.0f, 0.0f};
+    return ghost->getChasePosition();
 }
 void ChaseMode::setDangerousStatus(){
     ghost->setDangerousStatus(true);
@@ -142,7 +152,7 @@ void ScatterMode::timerModeOver(){
     ghost->setState(ghost->getChaseMode());
 }
 sf::Vector2f ScatterMode::getTargetPosition(){
-    return {0.0f, 0.0f};
+    return ghost->getChaseScatterPosition();
 }
 void ScatterMode::setDangerousStatus(){
     ghost->setDangerousStatus(false);
@@ -184,37 +194,57 @@ void FrightenedMode::setDangerousStatus(){
 }
 
 
-
-Blinky::Blinky(float x, float y, float radius): Ghost(x, y, radius){
+//DIFFERENT GHOSTS TYPES
+Blinky::Blinky(float x, float y, float radius, Pacman* pPacman): Ghost(x, y, radius, pPacman){
+    strategy = new BlinkyStrategy(pPacman, this);
     color = sf::Color::Red;
     shape.setFillColor(color);
+}
+Blinky::~Blinky(){
+    delete strategy;
 }
 void Blinky::updatePosition(float elapsedTime){
     position += sf::Vector2f(0.1f, 0.3f);
 }
 
 
-Clyde::Clyde(float x, float y, float radius): Ghost(x, y, radius){
+Clyde::Clyde(float x, float y, float radius, Pacman* pPacman): Ghost(x, y, radius, pPacman){
+    strategy = new ClydeStrategy(pPacman, this);
     color = sf::Color(40, 87, 158);
     shape.setFillColor(color);
+}
+Clyde::~Clyde(){
+    delete strategy;
 }
 void Clyde::updatePosition(float elapsedTime){
     position += sf::Vector2f(0.1f, 0.2f);
 }
 
 
-Inky::Inky(float x, float y, float radius): Ghost(x, y, radius){
+Inky::Inky(float x, float y, float radius, Pacman* pPacman): Ghost(x, y, radius, pPacman){
+    strategy = new InkyStrategy(pPacman, this);
     color = sf::Color::Blue;
     shape.setFillColor(color);
+}
+Inky::~Inky(){
+    delete strategy;
+}
+void Inky::updateBlinky(Blinky *other) {
+    delete strategy;
+    strategy = new InkyStrategy(pacman, this, other);
 }
 void Inky::updatePosition(float elapsedTime){
     position += sf::Vector2f(0.2f, 0.2f);
 }
 
 
-Pinky::Pinky(float x, float y, float radius): Ghost(x, y, radius){
+Pinky::Pinky(float x, float y, float radius, Pacman* pPacman): Ghost(x, y, radius, pPacman){
+    strategy = new PinkyStrategy(pPacman, this);
     color = sf::Color::Magenta;
     shape.setFillColor(color);
+}
+Pinky::~Pinky(){
+    delete strategy;
 }
 void Pinky::updatePosition(float elapsedTime){
     position += sf::Vector2f(0.3f, 0.3f);
@@ -300,7 +330,10 @@ sf::Vector2f InkyStrategy::getChasePosition() {
     if (dir == Direction::LEFT){
         vec.x -= 40.f;
     }
-    vec -= blinky->get_position();
+    if (blinky != nullptr){
+        vec -= blinky->get_position();
+    }
+
     vec.x *= 2;
     vec.y *= 2;
 

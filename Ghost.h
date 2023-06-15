@@ -10,10 +10,18 @@ class ScatterMode;
 class EatenMode;
 class FrightenedMode;
 
+class GhostStrategy;
+class ClydeStrategy;
+class BlinkyStrategy;
+class PinkyStrategy;
+class InkyStrategy;
+
+
+
 class Ghost: public MovingEntity{
 public:
-    Ghost(float x, float y, float radius);
-    ~Ghost();
+    Ghost(float x, float y, float radius, Pacman* pPacman);
+    virtual ~Ghost();
     void render(sf::RenderWindow &window) override;
     float getRadius() const;
     void setState(GhostState* newState);
@@ -29,7 +37,14 @@ public:
     EatenMode* getEatenMode();
     FrightenedMode* getFrightenedMode();
 
+    sf::Vector2f getChasePosition();
+    sf::Vector2f getChaseScatterPosition();
+
+    
+
 protected:
+    Pacman* pacman;
+
     GhostState* currentState;
     HouseMode* houseMode;
     ChaseMode* chaseMode;
@@ -37,7 +52,7 @@ protected:
     EatenMode* eatenMode;
     FrightenedMode* frightenedMode;
 
-    Pacman* pacman;
+    GhostStrategy* strategy;
 
     bool is_dangerous;
     bool is_chasing;
@@ -49,29 +64,32 @@ protected:
 
 class Blinky : public Ghost {
 public:
-    Blinky(float x, float y, float radius);
+    Blinky(float x, float y, float radius, Pacman* pPacman);
+    ~Blinky() override;
     void updatePosition(float elapsedTime) override;
 };
 
 class Clyde : public Ghost {
 public:
-    Clyde(float x, float y, float radius);
+    Clyde(float x, float y, float radius, Pacman* pPacman);
+    ~Clyde() override;
     void updatePosition(float elapsedTime) override;
 };
 
 class Inky : public Ghost {
 public:
-    Inky(float x, float y, float radius);
+    Inky(float x, float y, float radius, Pacman* pPacman);
+    ~Inky() override;
+    void updateBlinky(Blinky* other);
     void updatePosition(float elapsedTime) override;
 };
 
 class Pinky : public Ghost {
 public:
-    Pinky(float x, float y, float radius);
+    Pinky(float x, float y, float radius, Pacman* pPacman);
+    ~Pinky() override;
     void updatePosition(float elapsedTime) override;
 };
-
-
 
 class GhostState{
 protected:
@@ -142,6 +160,7 @@ public:
     explicit GhostStrategy(Pacman* pPacman, Ghost* pGhost);
     virtual sf::Vector2f getChasePosition() = 0;
     virtual sf::Vector2f getChaseScatterPosition() = 0;
+    virtual ~GhostStrategy() = default;
 };
 
 class ClydeStrategy: public GhostStrategy{
@@ -169,7 +188,7 @@ class InkyStrategy: public GhostStrategy{
 protected:
     Blinky* blinky;
 public:
-    InkyStrategy(Pacman* pPacman, Ghost* pGhost, Blinky* pBlinky);
+    InkyStrategy(Pacman* pPacman, Ghost* pGhost, Blinky* pBlinky = nullptr);
     sf::Vector2f getChasePosition() override;
     sf::Vector2f getChaseScatterPosition() override;
 };

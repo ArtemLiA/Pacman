@@ -2,6 +2,8 @@
 #include<SFML/Graphics.hpp>
 #include "Pacman.h"
 #include "Ghost.h"
+#include "Cell.h"
+#include "Game.h"
 
 void renderWindow(){
     sf::Clock clock;
@@ -11,16 +13,16 @@ void renderWindow(){
 
     sf::RenderWindow window(sf::VideoMode(window_s.x, window_s.y), "SFML works!", sf::Style::Default);
     window.setFramerateLimit(100);
-    Pinky pinky(0, 0, 25);
-    Clyde clyde(40, 40, 25);
-    Blinky blinky(120, 120, 25);
-    Inky inky(200, 200, 30);
+    Pacman pacman(15, 15);
+    Pinky pinky(0, 0, 25, &pacman);
+    Clyde clyde(40, 40, 25, &pacman);
+    Blinky blinky(120, 120, 25, &pacman);
+    Inky inky(200, 200, 30, &pacman);
+    inky.updateBlinky(&blinky);
 
     sf::RectangleShape rectangleShape(sf::Vector2f(50, 50));
     rectangleShape.setFillColor(sf::Color(207, 74, 45));
     rectangleShape.setPosition(500, 500);
-
-    Pacman pacman(15, 15);
 
     while(window.isOpen()) {
         clock.restart();
@@ -53,6 +55,8 @@ void renderWindow(){
 }
 
 int main() {
-    renderWindow();
+    struct Field f;
+    std::cout << f.maze[13] << std::endl;
+
     return 0;
 }

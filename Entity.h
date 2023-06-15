@@ -11,6 +11,7 @@ protected:
 public:
 	virtual sf::FloatRect getBounds() = 0;
 	virtual void render(sf::RenderWindow& window) = 0;
+    virtual ~Entity() = default;
 };
 
 class StaticEntity : public Entity{

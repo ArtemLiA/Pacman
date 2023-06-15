@@ -3,41 +3,43 @@
 
 class AbstractGhostFactory{
 public:
-    virtual Ghost* createGhost(float x, float y, float size) = 0;
+    virtual Ghost* createGhost(float x, float y, float size, Pacman* pPacman) = 0;
 };
 
 class PinkyFactory: public AbstractGhostFactory{
 public:
-    Pinky* createGhost(float x, float y, float radius) override;
+    Pinky* createGhost(float x, float y, float radius, Pacman* pPacman) override;
 };
 
 class InkyFactory: public AbstractGhostFactory{
 public:
-    Inky* createGhost(float x, float y, float radius) override;
+    Inky* createGhost(float x, float y, float radius, Pacman* pPacman) override;
 };
 
 class ClydeFactory: public AbstractGhostFactory{
 public:
-    Clyde* createGhost(float x, float y, float radius) override;
+    Clyde* createGhost(float x, float y, float radius, Pacman* pPacman) override;
 };
 
 class BlinkyFactory: public AbstractGhostFactory{
 public:
-    Blinky* createGhost(float x, float y, float radius) override;
+    Blinky* createGhost(float x, float y, float radius, Pacman* pPacman) override;
 };
 
-Pinky* PinkyFactory::createGhost(float x, float y, float radius){
-    return new Pinky(x, y, radius);
+
+
+Pinky* PinkyFactory::createGhost(float x, float y, float radius, Pacman* pPacman){
+    return new Pinky(x, y, radius, pPacman);
 }
 
-Inky* InkyFactory::createGhost(float x, float y, float radius){
-    return new Inky(x, y, radius);
+Inky* InkyFactory::createGhost(float x, float y, float radius, Pacman* pPacman){
+    return new Inky(x, y, radius, pPacman);
 }
 
-Clyde* ClydeFactory::createGhost(float x, float y, float radius){
-    return new Clyde(x, y, radius);
+Clyde* ClydeFactory::createGhost(float x, float y, float radius, Pacman* pPacman){
+    return new Clyde(x, y, radius, pPacman);
 }
 
-Blinky* BlinkyFactory::createGhost(float x, float y, float radius){
-    return new Blinky(x, y, radius);
+Blinky* BlinkyFactory::createGhost(float x, float y, float radius, Pacman* pPacman){
+    return new Blinky(x, y, radius, pPacman);
 }
