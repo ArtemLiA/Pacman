@@ -4,10 +4,6 @@
 
 
 Game::Game() {
-    auto pinkyFactory = new PinkyFactory();
-    auto inkyFactory = new InkyFactory();
-    auto clydeFactory = new ClydeFactory();
-    auto blinkyFactor = new BlinkyFactory();
     // create factory AbstractGhostFactory* ghostFactory;
     // read the text file with maze and positions of entities
     //if x - create wall and add into walls

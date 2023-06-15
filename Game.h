@@ -6,9 +6,36 @@
 #include "Ghost.h"
 #include "Cell.h"
 
-class Game {
-	int width;
-	int height;
+//Поле будет состоять из 23x14 клеток
+//Размер каждой клетки - 35 на 35 пикселей
+
+struct Field{
+    static const size_t block_size = 35;
+    static const size_t width = 23;
+    static const size_t height = 14;
+
+    std::string maze[height] = {
+            "##### ############ ####",
+            "#                     #",
+            "#  # ###### ###### #  #",
+            "   # #           # #   ",
+            "#  # #           # #  #",
+            "#  # # ######### # #  #",
+            "#  #   #       #   #  #",
+            "#  #   #  # #  #   #  #",
+            "#  # # #### #### # #  #",
+            "#  # #           # #  #",
+            "   # #           # #   ",
+            "#  # ###### ###### #  #",
+            "#                     #",
+            "#### ############# ####"
+    };
+};
+
+class Game{
+protected:
+    Field game_field;
+
 	std::vector<Entity*> objects;
 	std::vector<Ghost*> ghosts;
 	std::vector<Cell*> cells;
@@ -23,4 +50,5 @@ public:
 	void render(sf::RenderWindow& window) const; // отрисовка
 	virtual ~Game();
 };
+
 
