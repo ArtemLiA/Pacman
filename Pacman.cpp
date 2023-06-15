@@ -1,5 +1,4 @@
 #include "Pacman.h"
-#include <iostream>
 
 Pacman::Pacman(float x, float y): MovingEntity(x, y){
     shape.setRadius(pacman_radius);
@@ -32,32 +31,33 @@ void Pacman::updatePacmanDirection() {
 }
 
 void Pacman::updatePosition(float elapsedTime) {
-    sf::Vector2f move = {0.0f, 0.0f};
     updatePacmanDirection();
 
     if (direction == Direction::UP){
-        move = {0.0f, -pacman_speed};
+        position += {0.0f, -pacman_speed};
     }
     if (direction == Direction::DOWN){
-        move = {0.0f, pacman_speed};
+        position += {0.0f, pacman_speed};
     }
     if (direction == Direction::LEFT){
-        move = {-pacman_speed, 0.0f};
+        position += {-pacman_speed, 0.0f};
     }
     if (direction == Direction::RIGHT){
-        move = {pacman_speed, 0.0f};
+        position += {pacman_speed, 0.0f};
     }
 
-    const sf::FloatRect pacmanBounds = shape.getGlobalBounds();
-    //  if (checkFieldWallsCollision(field, pacmanBounds, movement))
-    // {
-    // Останавливаем пакмана при столкновении
-    //      direction = Direction::NONE;
-    // }
-    shape.move(move);
 }
 
 void Pacman::render(sf::RenderWindow &window){
+    shape.setPosition(position);
     window.draw(shape);
+}
+
+sf::Vector2f Pacman::getPacmanPosition(){
+    return position;
+}
+
+Direction Pacman::getPacmanDirection(){
+    return direction;
 }
 

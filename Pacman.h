@@ -11,5 +11,7 @@ public:
 	void updatePacmanDirection();
     void updatePosition(float elapsedTime) override;
     void render(sf::RenderWindow& window) override;
+    sf::Vector2f getPacmanPosition();
+    Direction getPacmanDirection();
 };
 

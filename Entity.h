@@ -2,11 +2,7 @@
 #include <SFML/Graphics.hpp>
 
 enum struct Direction{
-	NONE,
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
+	NONE, UP, DOWN, LEFT, RIGHT
 };
 
 class Entity{

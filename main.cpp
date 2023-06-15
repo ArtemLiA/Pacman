@@ -16,7 +16,7 @@ void renderWindow(){
     Blinky blinky(120, 120, 25);
     Inky inky(200, 200, 30);
 
-    sf::RectangleShape rectangleShape(sf::Vector2f(40, 40));
+    sf::RectangleShape rectangleShape(sf::Vector2f(50, 50));
     rectangleShape.setFillColor(sf::Color(207, 74, 45));
     rectangleShape.setPosition(500, 500);
 
