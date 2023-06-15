@@ -25,6 +25,10 @@ Ghost::~Ghost(){
     delete frightenedMode;
 }
 
+float Ghost::getRadius() const{
+    return ghost_radius;
+}
+
 void Ghost::render(sf::RenderWindow &window){
     shape.setPosition(position);
     shape.setRadius(ghost_radius);
@@ -215,3 +219,96 @@ Pinky::Pinky(float x, float y, float radius): Ghost(x, y, radius){
 void Pinky::updatePosition(float elapsedTime){
     position += sf::Vector2f(0.3f, 0.3f);
 }
+
+
+
+/*--------------------------------------------------------------*/
+GhostStrategy::GhostStrategy(Pacman *pPacman, Ghost* pGhost){
+    pacman = pPacman;
+    ghost = pGhost;
+}
+
+
+//ClydeStrategy
+ClydeStrategy::ClydeStrategy(Pacman *pPacman, Ghost* pGhost):
+            GhostStrategy(pPacman, pGhost){};
+
+sf::Vector2f ClydeStrategy::getChasePosition(){
+    sf::Vector2f vec = (ghost->get_position() - pacman->getPacmanPosition());
+    if (vec.x * vec.x + vec.y + vec.y <= 200){
+        return pacman->getPacmanPosition();
+    }
+    return getChaseScatterPosition();
+
+}
+
+sf::Vector2f ClydeStrategy::getChaseScatterPosition(){
+    return {0, 800 - 2 * ghost->getRadius() + 1};
+}
+
+
+//BlinkyStrategy
+BlinkyStrategy::BlinkyStrategy(Pacman *pPacman, Ghost* pGhost):
+            GhostStrategy(pPacman, pGhost){};
+
+sf::Vector2f BlinkyStrategy::getChasePosition() {
+    return pacman->getPacmanPosition();
+}
+sf::Vector2f BlinkyStrategy::getChaseScatterPosition(){
+    return {1000 - 2 * ghost->getRadius() ,0.0f};
+}
+
+
+//PinkyStrategy
+PinkyStrategy::PinkyStrategy(Pacman *pPacman, Ghost *pGhost):
+            GhostStrategy(pPacman, pGhost){};
+
+sf::Vector2f PinkyStrategy::getChasePosition(){
+    auto pacman_vec = pacman->getPacmanPosition();
+    if (pacman_vec.x - 40 > 0){
+        return {pacman_vec.x - 40, pacman_vec.y};
+    }
+    if (pacman_vec.y - 40 > 0){
+        return {pacman_vec.x, pacman_vec.y - 40};
+    }
+    return {pacman_vec.x + 40, pacman_vec.y};
+}
+
+sf::Vector2f PinkyStrategy::getChaseScatterPosition(){
+    return {1.0f, 1.0f};
+}
+
+
+//InkyStrategy
+InkyStrategy::InkyStrategy(Pacman *pPacman, Ghost *pGhost, Blinky* pBlinky):
+GhostStrategy(pPacman, pGhost){
+    blinky = pBlinky;
+};
+
+sf::Vector2f InkyStrategy::getChasePosition() {
+    auto dir = pacman->getPacmanDirection();
+    sf::Vector2f vec = pacman->getPacmanPosition();
+    if (dir == Direction::UP){
+        vec.y -= 40.0f;
+    }
+    if (dir == Direction::DOWN){
+        vec.y += 40.0f;
+    }
+    if (dir == Direction::RIGHT){
+        vec.x += 40.0f;
+    }
+    if (dir == Direction::LEFT){
+        vec.x -= 40.f;
+    }
+    vec -= blinky->get_position();
+    vec.x *= 2;
+    vec.y *= 2;
+
+    return vec;
+}
+
+sf::Vector2f InkyStrategy::getChaseScatterPosition() {
+    float radius = ghost->getRadius();
+    return {1000 - 2 * radius, 800 - 2 * radius};
+}
+
