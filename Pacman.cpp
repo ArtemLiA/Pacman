@@ -30,22 +30,26 @@ void Pacman::updatePacmanDirection() {
     }
 }
 
+void Pacman::setPacmanPosition(float x, float y){
+    position = {x, y};
+    shape.setPosition(position);
+}
+
+float Pacman::getPacmanRadius() const{
+    return pacman_radius;
+}
+
 void Pacman::updatePosition(float elapsedTime) {
     updatePacmanDirection();
+    position += getDirectionMove();
+}
 
-    if (direction == Direction::UP){
-        position += {0.0f, -pacman_speed};
+void Pacman::update(float elapsedTime, std::vector<Cell*>& cells){
+    updatePacmanDirection();
+    if(checkDirectionCollision(cells)){
+        return;
     }
-    if (direction == Direction::DOWN){
-        position += {0.0f, pacman_speed};
-    }
-    if (direction == Direction::LEFT){
-        position += {-pacman_speed, 0.0f};
-    }
-    if (direction == Direction::RIGHT){
-        position += {pacman_speed, 0.0f};
-    }
-
+    position += getDirectionMove();
 }
 
 void Pacman::render(sf::RenderWindow &window){
@@ -59,5 +63,37 @@ sf::Vector2f Pacman::getPacmanPosition(){
 
 Direction Pacman::getPacmanDirection(){
     return direction;
+}
+
+bool Pacman::checkDirectionCollision(std::vector<Cell*>& cells) const{
+    sf::CircleShape circ;
+    circ.setRadius(pacman_radius);
+    circ.setPosition(position);
+
+    sf::Vector2f move = getDirectionMove();
+    circ.move(move);
+
+    for (auto cell: cells){
+        if (cell->isWall() && cell->getGlobalBounds().intersects(circ.getGlobalBounds())){
+            return true;
+        }
+    }
+    return false;
+}
+
+sf::Vector2f Pacman::getDirectionMove() const {
+    if (direction == Direction::UP){
+        return {0.0f, -pacman_speed};
+    }
+    if (direction == Direction::DOWN){
+        return {0.0f, pacman_speed};
+    }
+    if (direction == Direction::LEFT){
+        return {-pacman_speed, 0.0f};
+    }
+    if (direction == Direction::RIGHT){
+        return {pacman_speed, 0.0f};
+    }
+    return {0.0f, 0.0f};
 }
 

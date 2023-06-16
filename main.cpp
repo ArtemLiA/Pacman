@@ -1,32 +1,16 @@
 #include <iostream>
 #include<SFML/Graphics.hpp>
 #include "Pacman.h"
-#include "Ghost.h"
 #include "Cell.h"
 #include "Game.h"
 
-void renderWindow(){
-    sf::Clock clock;
 
-    float radius = 50;
-    sf::Vector2i window_s = {1000, 800};
-
-    sf::RenderWindow window(sf::VideoMode(window_s.x, window_s.y), "SFML works!", sf::Style::Default);
-    window.setFramerateLimit(100);
-    Pacman pacman(15, 15);
-    Pinky pinky(0, 0, 25, &pacman);
-    Clyde clyde(40, 40, 25, &pacman);
-    Blinky blinky(120, 120, 25, &pacman);
-    Inky inky(200, 200, 30, &pacman);
-    inky.updateBlinky(&blinky);
-
-    sf::RectangleShape rectangleShape(sf::Vector2f(50, 50));
-    rectangleShape.setFillColor(sf::Color(207, 74, 45));
-    rectangleShape.setPosition(500, 500);
+int main() {
+    sf::Vector2f win_s = Field::pixel_sizes;
+    sf::RenderWindow window(sf::VideoMode(win_s.x, win_s.y), "SFML works!", sf::Style::Default);
+    Game game;
 
     while(window.isOpen()) {
-        clock.restart();
-        clock.restart();
         sf::Event event{};
         sf::Vector2f move;
 
@@ -36,27 +20,12 @@ void renderWindow(){
             }
         }
 
-        inky.updatePosition(clock.getElapsedTime().asSeconds());
-        clyde.updatePosition(clock.getElapsedTime().asSeconds());
-        blinky.updatePosition(clock.getElapsedTime().asSeconds());
-        pinky.updatePosition(clock.getElapsedTime().asSeconds());
-        pacman.updatePosition(clock.getElapsedTime().asSeconds());
+        game.updateGame(125);
 
         window.clear();
-
-        window.draw(rectangleShape);
-        inky.render(window);
-        clyde.render(window);
-        blinky.render(window);
-        pinky.render(window);
-        pacman.render(window);
+        game.render(window);
         window.display();
     }
-}
-
-int main() {
-    struct Field f;
-    std::cout << f.maze[13] << std::endl;
 
     return 0;
 }

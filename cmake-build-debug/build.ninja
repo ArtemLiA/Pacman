@@ -89,6 +89,22 @@ build CMakeFiles/Pacman.dir/Pacman.cpp.obj: CXX_COMPILER__Pacman_Debug C$:/Users
   OBJECT_DIR = CMakeFiles\Pacman.dir
   OBJECT_FILE_DIR = CMakeFiles\Pacman.dir
 
+build CMakeFiles/Pacman.dir/AbstractGhostFactory.cpp.obj: CXX_COMPILER__Pacman_Debug C$:/Users/lyaho/CS_Projects/C++/Games/Pacman/AbstractGhostFactory.cpp || cmake_object_order_depends_target_Pacman
+  DEFINES = -DSFML_STATIC
+  DEP_FILE = CMakeFiles\Pacman.dir\AbstractGhostFactory.cpp.obj.d
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -isystem "C:/Users/lyaho/CS_Projects/C++/lib/SFML/GCC 7.3.0 MinGW (SEH) - 64-bit/SFML-2.5.1/include"
+  OBJECT_DIR = CMakeFiles\Pacman.dir
+  OBJECT_FILE_DIR = CMakeFiles\Pacman.dir
+
+build CMakeFiles/Pacman.dir/Cell.cpp.obj: CXX_COMPILER__Pacman_Debug C$:/Users/lyaho/CS_Projects/C++/Games/Pacman/Cell.cpp || cmake_object_order_depends_target_Pacman
+  DEFINES = -DSFML_STATIC
+  DEP_FILE = CMakeFiles\Pacman.dir\Cell.cpp.obj.d
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -isystem "C:/Users/lyaho/CS_Projects/C++/lib/SFML/GCC 7.3.0 MinGW (SEH) - 64-bit/SFML-2.5.1/include"
+  OBJECT_DIR = CMakeFiles\Pacman.dir
+  OBJECT_FILE_DIR = CMakeFiles\Pacman.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Pacman
@@ -97,7 +113,7 @@ build CMakeFiles/Pacman.dir/Pacman.cpp.obj: CXX_COMPILER__Pacman_Debug C$:/Users
 #############################################
 # Link the executable Pacman.exe
 
-build Pacman.exe: CXX_EXECUTABLE_LINKER__Pacman_Debug CMakeFiles/Pacman.dir/main.cpp.obj CMakeFiles/Pacman.dir/Entity.cpp.obj CMakeFiles/Pacman.dir/Game.cpp.obj CMakeFiles/Pacman.dir/Ghost.cpp.obj CMakeFiles/Pacman.dir/Pacman.cpp.obj | C$:/Users/lyaho/CS_Projects/C++/lib/SFML/GCC$ 7.3.0$ MinGW$ (SEH)$ -$ 64-bit/SFML-2.5.1/lib/libsfml-graphics-s-d.a C$:/Users/lyaho/CS_Projects/C++/lib/SFML/GCC$ 7.3.0$ MinGW$ (SEH)$ -$ 64-bit/SFML-2.5.1/lib/libsfml-window-s-d.a C$:/Users/lyaho/CS_Projects/C++/lib/SFML/GCC$ 7.3.0$ MinGW$ (SEH)$ -$ 64-bit/SFML-2.5.1/lib/libsfml-system-s-d.a C$:/Users/lyaho/CS_Projects/C++/lib/SFML/GCC$ 7.3.0$ MinGW$ (SEH)$ -$ 64-bit/SFML-2.5.1/lib/libfreetype.a
+build Pacman.exe: CXX_EXECUTABLE_LINKER__Pacman_Debug CMakeFiles/Pacman.dir/main.cpp.obj CMakeFiles/Pacman.dir/Entity.cpp.obj CMakeFiles/Pacman.dir/Game.cpp.obj CMakeFiles/Pacman.dir/Ghost.cpp.obj CMakeFiles/Pacman.dir/Pacman.cpp.obj CMakeFiles/Pacman.dir/AbstractGhostFactory.cpp.obj CMakeFiles/Pacman.dir/Cell.cpp.obj | C$:/Users/lyaho/CS_Projects/C++/lib/SFML/GCC$ 7.3.0$ MinGW$ (SEH)$ -$ 64-bit/SFML-2.5.1/lib/libsfml-graphics-s-d.a C$:/Users/lyaho/CS_Projects/C++/lib/SFML/GCC$ 7.3.0$ MinGW$ (SEH)$ -$ 64-bit/SFML-2.5.1/lib/libsfml-window-s-d.a C$:/Users/lyaho/CS_Projects/C++/lib/SFML/GCC$ 7.3.0$ MinGW$ (SEH)$ -$ 64-bit/SFML-2.5.1/lib/libsfml-system-s-d.a C$:/Users/lyaho/CS_Projects/C++/lib/SFML/GCC$ 7.3.0$ MinGW$ (SEH)$ -$ 64-bit/SFML-2.5.1/lib/libfreetype.a
   FLAGS = -g
   LINK_FLAGS = -static -static-libgcc
   LINK_LIBRARIES = "C:/Users/lyaho/CS_Projects/C++/lib/SFML/GCC 7.3.0 MinGW (SEH) - 64-bit/SFML-2.5.1/lib/libsfml-graphics-s-d.a"  "C:/Users/lyaho/CS_Projects/C++/lib/SFML/GCC 7.3.0 MinGW (SEH) - 64-bit/SFML-2.5.1/lib/libsfml-window-s-d.a"  "C:/Users/lyaho/CS_Projects/C++/lib/SFML/GCC 7.3.0 MinGW (SEH) - 64-bit/SFML-2.5.1/lib/libsfml-system-s-d.a"  -lwinmm  -lgdi32  -lOpenGL32  "C:/Users/lyaho/CS_Projects/C++/lib/SFML/GCC 7.3.0 MinGW (SEH) - 64-bit/SFML-2.5.1/lib/libfreetype.a"  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
