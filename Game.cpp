@@ -1,9 +1,56 @@
-#include "Game.h"
 #include <iostream>
+#include "Game.h"
 #include "AbstractGhostFactory.h"
 
 
 Game::Game() {
+    ClydeFactory clydeFactory;
+    PinkyFactory pinkyFactory;
+    BlinkyFactory blinkyFactory;
+    InkyFactory inkyFactory;
+
+    Clyde* new_clyde = nullptr;
+    Pinky* new_pinky = nullptr;
+    Blinky* new_blinky = nullptr;
+    Inky* new_inky = nullptr;
+
+    pacman = new Pacman(0, 0);
+    float bs = Field::f_block_size;
+
+    float ghost_size = pacman->getPacmanRadius();
+
+    for (size_t i = 0; i < Field::height; i++){
+        for (size_t j = 0; j < Field::width; j++){
+            if (game_field.maze[i][j] == 'P'){
+                new_pinky = pinkyFactory.createGhost(bs * j + 2.0f, bs * i + 2.0f, ghost_size, pacman);
+                ghosts.push_back(new_pinky);
+            }
+            if (game_field.maze[i][j] == 'B'){
+                new_blinky = blinkyFactory.createGhost(bs * j + 2.0f, bs * i + 2.0f, ghost_size, pacman);
+                ghosts.push_back(new_blinky);
+            }
+            if (game_field.maze[i][j] == 'C'){
+                new_clyde = clydeFactory.createGhost(bs * j, bs * i + 2.0f, ghost_size, pacman);
+                ghosts.push_back(new_clyde);
+            }
+            if (game_field.maze[i][j] == 'I'){
+                new_inky = inkyFactory.createGhost(bs * j + 2.0f, bs * i, ghost_size, pacman);
+                ghosts.push_back(new_inky);
+            }
+            if (game_field.maze[i][j] == '#'){
+                cells.push_back(new Cell(bs * j, bs * i, bs, CellCategory::WALL));
+            }
+            if (game_field.maze[i][j] == 'M'){
+                pacman->setPacmanPosition(bs * j, bs * i + 5.0f);
+            }
+            if (game_field.maze[i][j] == 'o'){
+                objects.push_back(new PacGum(bs * j, bs * i, bs));
+            }
+            if (game_field.maze[i][j] == 'S'){
+                objects.push_back(new SuperPacGum(bs * j, bs * i, bs));
+            }
+        }
+    }
     // create factory AbstractGhostFactory* ghostFactory;
     // read the text file with maze and positions of entities
     //if x - create wall and add into walls
@@ -28,20 +75,20 @@ Pacman Game::getPacman() {
 }
 
 void Game::updateGame(float elapsedTime) {
-    for (auto ghost: ghosts){
-        ghost->updatePosition(elapsedTime);
-    }
-    pacman->updatePosition(elapsedTime);
+    pacman->update(123, cells);
+    //for (auto ghost: ghosts){
+    //    ghost->updatePosition(elapsedTime);
+    //}
 }
 void Game::render(sf::RenderWindow& window) const {
+    for (auto cell: cells){
+        cell->render(window);
+    }
     for (auto object: objects){
         object->render(window);
     }
     for (auto ghost: ghosts){
         ghost->render(window);
-    }
-    for (auto cell: cells){
-        cell->render(window);
     }
     pacman->render(window);
 }

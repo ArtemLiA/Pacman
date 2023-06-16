@@ -24,6 +24,8 @@ public:
 };
 
 class PacGum : public StaticEntity {
+protected:
+    sf::CircleShape little_circle;
 public:
 	PacGum(float x, float y, float s);
 	void render(sf::RenderWindow& window) final;
@@ -31,6 +33,8 @@ public:
 
 
 class SuperPacGum : public StaticEntity {
+protected:
+    sf::CircleShape circle;
 public:
 	SuperPacGum(float x, float y, float s);
 	void render(sf::RenderWindow& window) final;

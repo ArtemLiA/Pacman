@@ -1,5 +1,7 @@
 #pragma once
+#include<iostream>
 #include<SFML/Graphics.hpp>
+#include "Field.h"
 #include "Pacman.h"
 #include "Entity.h"
 
@@ -21,7 +23,7 @@ class InkyStrategy;
 class Ghost: public MovingEntity{
 public:
     Ghost(float x, float y, float radius, Pacman* pPacman);
-    virtual ~Ghost();
+    ~Ghost() override;
     void render(sf::RenderWindow &window) override;
     float getRadius() const;
     void setState(GhostState* newState);
@@ -30,6 +32,7 @@ public:
     void setChasingStatus(bool isChasing);
     void setDangerousStatus(bool isDangerous);
     sf::Vector2f get_position();
+    std::string getCurrentStateInfo();
 
     HouseMode* getHouseMode();
     ChaseMode* getChaseMode();
@@ -59,6 +62,7 @@ protected:
     sf::Color color;
     const float ghost_speed = 90.f;
     float ghost_radius;
+    sf::Vector2f start_position;
 };
 
 
@@ -105,6 +109,7 @@ public:
     virtual void computeNextDir();
     virtual sf::Vector2f getTargetPosition();
     virtual void setDangerousStatus();
+    virtual std::string getStateInfo();
 };
 
 class HouseMode: public GhostState{
@@ -113,6 +118,7 @@ public:
     void outsideHouse() override;
     sf::Vector2f getTargetPosition() override;
     void setDangerousStatus() override;
+    std::string getStateInfo() override;
 };
 
 class ChaseMode: public GhostState{
@@ -122,6 +128,7 @@ public:
     void timerModeOver() override;
     sf::Vector2f getTargetPosition() override;
     void setDangerousStatus() override;
+    std::string getStateInfo() override;
 };
 
 class ScatterMode: public GhostState{
@@ -131,6 +138,7 @@ public:
     void timerModeOver() override;
     sf::Vector2f getTargetPosition() override;
     void setDangerousStatus() override;
+    std::string getStateInfo() override;
 };
 
 class EatenMode: public GhostState{
@@ -139,6 +147,7 @@ public:
     void insideHouse() override;
     sf::Vector2f getTargetPosition() override;
     void setDangerousStatus() override;
+    std::string getStateInfo() override;
 };
 
 class FrightenedMode: public GhostState{
@@ -148,6 +157,7 @@ public:
     void eaten() override;
     sf::Vector2f getTargetPosition() override;
     void setDangerousStatus() override;
+    std::string getStateInfo() override;
 };
 
 

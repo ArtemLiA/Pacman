@@ -17,6 +17,7 @@ Ghost::Ghost(float x, float y, float radius, Pacman* pPacman): MovingEntity(x, y
     pacman = pPacman;
     is_chasing = false;
     is_dangerous = false;
+    start_position = position;
 }
 
 Ghost::~Ghost(){
@@ -32,10 +33,6 @@ float Ghost::getRadius() const{
 }
 
 void Ghost::render(sf::RenderWindow &window){
-    shape.setPosition(position);
-    shape.setRadius(ghost_radius);
-    shape.setFillColor(color);
-
     window.draw(shape);
 }
 
@@ -62,6 +59,10 @@ void Ghost::setDangerousStatus(bool isDangerous){
 
 sf::Vector2f Ghost::get_position(){
     return position;
+}
+
+std::string Ghost::getCurrentStateInfo(){
+    return currentState->getStateInfo();
 }
 
 HouseMode* Ghost::getHouseMode(){
@@ -108,6 +109,9 @@ sf::Vector2f GhostState::getTargetPosition(){
     return {0.0f, 0.0f};
 };
 void GhostState::setDangerousStatus(){};
+std::string GhostState::getStateInfo() {
+    return "";
+};
 
 
 //HOUSE MODE
@@ -125,6 +129,9 @@ sf::Vector2f HouseMode::getTargetPosition(){
 void HouseMode::setDangerousStatus(){
     ghost->setDangerousStatus(false);
 }
+std::string HouseMode::getStateInfo(){
+    return "HouseMode";
+}
 
 
 //CHASE MODE
@@ -140,6 +147,9 @@ sf::Vector2f ChaseMode::getTargetPosition(){
 }
 void ChaseMode::setDangerousStatus(){
     ghost->setDangerousStatus(true);
+}
+std::string ChaseMode::getStateInfo(){
+    return "ChaseMode";
 }
 
 
@@ -157,6 +167,9 @@ sf::Vector2f ScatterMode::getTargetPosition(){
 void ScatterMode::setDangerousStatus(){
     ghost->setDangerousStatus(false);
 }
+std::string ScatterMode::getStateInfo(){
+    return "ScatterMode";
+}
 
 
 
@@ -170,6 +183,9 @@ sf::Vector2f EatenMode::getTargetPosition(){
 }
 void EatenMode::setDangerousStatus(){
     ghost->setDangerousStatus(false);
+}
+std::string EatenMode::getStateInfo(){
+    return "EatenMode";
 }
 
 
@@ -192,13 +208,19 @@ sf::Vector2f FrightenedMode::getTargetPosition(){
 void FrightenedMode::setDangerousStatus(){
     ghost->setDangerousStatus(true);
 }
+std::string FrightenedMode::getStateInfo(){
+    return "FrightenedMode";
+}
 
 
 //DIFFERENT GHOSTS TYPES
 Blinky::Blinky(float x, float y, float radius, Pacman* pPacman): Ghost(x, y, radius, pPacman){
     strategy = new BlinkyStrategy(pPacman, this);
     color = sf::Color::Red;
+
     shape.setFillColor(color);
+    shape.setRadius(radius);
+    shape.setPosition(position);
 }
 Blinky::~Blinky(){
     delete strategy;
@@ -210,8 +232,11 @@ void Blinky::updatePosition(float elapsedTime){
 
 Clyde::Clyde(float x, float y, float radius, Pacman* pPacman): Ghost(x, y, radius, pPacman){
     strategy = new ClydeStrategy(pPacman, this);
-    color = sf::Color(40, 87, 158);
+    color = sf::Color(250, 179, 26);
+
     shape.setFillColor(color);
+    shape.setRadius(radius);
+    shape.setPosition(position);
 }
 Clyde::~Clyde(){
     delete strategy;
@@ -223,8 +248,11 @@ void Clyde::updatePosition(float elapsedTime){
 
 Inky::Inky(float x, float y, float radius, Pacman* pPacman): Ghost(x, y, radius, pPacman){
     strategy = new InkyStrategy(pPacman, this);
-    color = sf::Color::Blue;
+    color = sf::Color(26, 250, 216);
+
     shape.setFillColor(color);
+    shape.setRadius(radius);
+    shape.setPosition(position);
 }
 Inky::~Inky(){
     delete strategy;
@@ -241,7 +269,10 @@ void Inky::updatePosition(float elapsedTime){
 Pinky::Pinky(float x, float y, float radius, Pacman* pPacman): Ghost(x, y, radius, pPacman){
     strategy = new PinkyStrategy(pPacman, this);
     color = sf::Color::Magenta;
+
     shape.setFillColor(color);
+    shape.setRadius(radius);
+    shape.setPosition(position);
 }
 Pinky::~Pinky(){
     delete strategy;
@@ -261,7 +292,7 @@ GhostStrategy::GhostStrategy(Pacman *pPacman, Ghost* pGhost){
 
 //ClydeStrategy
 ClydeStrategy::ClydeStrategy(Pacman *pPacman, Ghost* pGhost):
-            GhostStrategy(pPacman, pGhost){};
+        GhostStrategy(pPacman, pGhost){};
 
 sf::Vector2f ClydeStrategy::getChasePosition(){
     sf::Vector2f vec = (ghost->get_position() - pacman->getPacmanPosition());
@@ -273,45 +304,45 @@ sf::Vector2f ClydeStrategy::getChasePosition(){
 }
 
 sf::Vector2f ClydeStrategy::getChaseScatterPosition(){
-    return {0, 800 - 2 * ghost->getRadius() + 1};
+    return Field::lower_left;
 }
 
 
 //BlinkyStrategy
 BlinkyStrategy::BlinkyStrategy(Pacman *pPacman, Ghost* pGhost):
-            GhostStrategy(pPacman, pGhost){};
+        GhostStrategy(pPacman, pGhost){};
 
 sf::Vector2f BlinkyStrategy::getChasePosition() {
     return pacman->getPacmanPosition();
 }
 sf::Vector2f BlinkyStrategy::getChaseScatterPosition(){
-    return {1000 - 2 * ghost->getRadius() ,0.0f};
+    return Field::upper_right;
 }
 
 
 //PinkyStrategy
 PinkyStrategy::PinkyStrategy(Pacman *pPacman, Ghost *pGhost):
-            GhostStrategy(pPacman, pGhost){};
+        GhostStrategy(pPacman, pGhost){};
 
 sf::Vector2f PinkyStrategy::getChasePosition(){
     auto pacman_vec = pacman->getPacmanPosition();
-    if (pacman_vec.x - 40 > 0){
-        return {pacman_vec.x - 40, pacman_vec.y};
+    if (pacman_vec.x - 2 * Field::block_size > 0){
+        return {pacman_vec.x - 2 * Field::block_size, pacman_vec.y};
     }
-    if (pacman_vec.y - 40 > 0){
-        return {pacman_vec.x, pacman_vec.y - 40};
+    if (pacman_vec.y - 2 * Field::block_size > 0){
+        return {pacman_vec.x, pacman_vec.y - 2 * Field::block_size};
     }
-    return {pacman_vec.x + 40, pacman_vec.y};
+    return {pacman_vec.x + 2 * Field::block_size, pacman_vec.y};
 }
 
 sf::Vector2f PinkyStrategy::getChaseScatterPosition(){
-    return {1.0f, 1.0f};
+    return Field::upper_left;
 }
 
 
 //InkyStrategy
 InkyStrategy::InkyStrategy(Pacman *pPacman, Ghost *pGhost, Blinky* pBlinky):
-GhostStrategy(pPacman, pGhost){
+        GhostStrategy(pPacman, pGhost){
     blinky = pBlinky;
 };
 
@@ -319,16 +350,16 @@ sf::Vector2f InkyStrategy::getChasePosition() {
     auto dir = pacman->getPacmanDirection();
     sf::Vector2f vec = pacman->getPacmanPosition();
     if (dir == Direction::UP){
-        vec.y -= 40.0f;
+        vec.y -= Field::block_size * 2;
     }
     if (dir == Direction::DOWN){
-        vec.y += 40.0f;
+        vec.y += Field::block_size * 2;
     }
     if (dir == Direction::RIGHT){
-        vec.x += 40.0f;
+        vec.x += Field::block_size * 2;
     }
     if (dir == Direction::LEFT){
-        vec.x -= 40.f;
+        vec.x -= Field::block_size * 2;
     }
     if (blinky != nullptr){
         vec -= blinky->get_position();
@@ -344,4 +375,3 @@ sf::Vector2f InkyStrategy::getChaseScatterPosition() {
     float radius = ghost->getRadius();
     return {1000 - 2 * radius, 800 - 2 * radius};
 }
-

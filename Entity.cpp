@@ -8,26 +8,39 @@ sf::FloatRect StaticEntity::getBounds(){
 
 //PacGum
 PacGum::PacGum(float x, float y, float s){
-    position.x = x;
-    position.y = y;
+    position = {x, y};
     size = s;
-}
-void PacGum::render(sf::RenderWindow &window) {
-    shape.setFillColor(sf::Color(255, 183, 174));
+
+    shape.setFillColor(sf::Color::Black);
     shape.setSize(sf::Vector2f(size, size));
     shape.setPosition(position);
+
+    little_circle.setFillColor(sf::Color::White);
+    little_circle.setRadius(0.125f * size);
+    little_circle.setPosition({position.x + 0.375f * s, position.y + 0.375f * s});
+}
+void PacGum::render(sf::RenderWindow &window) {
+    window.draw(shape);
+    window.draw(little_circle);
 }
 
 //SuperPacGum
 SuperPacGum::SuperPacGum(float x, float y, float s) {
-    position.x = x;
-    position.y = y;
+    position = {x, y};
     size = s;
-}
-void SuperPacGum::render(sf::RenderWindow &window){
-    shape.setFillColor(sf::Color(255, 183, 174));
+
+    shape.setFillColor(sf::Color::Black);
     shape.setSize(sf::Vector2f(size, size));
     shape.setPosition(position);
+
+    circle.setFillColor(sf::Color(247, 211, 250));
+    circle.setRadius(0.25f * size);
+    circle.setPosition({position.x + 0.25f * s, position.y + 0.25f * s});
+
+}
+void SuperPacGum::render(sf::RenderWindow &window){
+    window.draw(shape);
+    window.draw(circle);
 }
 
 //Moving Entity
