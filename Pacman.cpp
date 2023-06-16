@@ -57,12 +57,16 @@ void Pacman::render(sf::RenderWindow &window){
     window.draw(shape);
 }
 
+Direction Pacman::getPacmanDirection() const{
+    return direction;
+}
+
 sf::Vector2f Pacman::getPacmanPosition() const{
     return position;
 }
 
-Direction Pacman::getPacmanDirection() const{
-    return direction;
+sf::FloatRect Pacman::getGlobalBounds() const {
+    return shape.getGlobalBounds();
 }
 
 bool Pacman::checkDirectionCollision(std::vector<Cell*>& cells) const{

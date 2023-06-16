@@ -1,5 +1,6 @@
 #pragma once
 #include<iostream>
+#include<vector>
 #include<SFML/Graphics.hpp>
 #include "Field.h"
 #include "Pacman.h"
@@ -42,7 +43,7 @@ public:
 
     sf::Vector2f getChasePosition();
     sf::Vector2f getChaseScatterPosition();
-
+    sf::FloatRect getGlobalBounds() const;
     
 
 protected:
@@ -201,4 +202,10 @@ public:
     InkyStrategy(Pacman* pPacman, Ghost* pGhost, Blinky* pBlinky = nullptr);
     sf::Vector2f getChasePosition() override;
     sf::Vector2f getChaseScatterPosition() override;
+};
+
+
+class PacmanChecker{
+public:
+    bool isPacmanCollide(const Pacman* pacman, std::vector<Ghost*> ghosts);
 };

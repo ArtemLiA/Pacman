@@ -9,7 +9,7 @@ UIPanel::UIPanel(float x, float y, float s) {
     background.setSize(sf::Vector2f(s, s));
     background.setPosition(x, y);
 
-    text.setPosition({x + 10, y + 5});
+    text.setPosition({x - 2.0f, y});
     text.setFillColor(sf::Color(150, 255, 97));
     text.setString(std::to_string(score));
     text.setStyle(sf::Text::Bold);
@@ -19,17 +19,23 @@ UIPanel::UIPanel(float x, float y, float s) {
 
 void UIPanel::increaseScore(size_t points){
     score += points;
+    text.setString(std::to_string(score));
 }
 
 void UIPanel::resetScore(){
     score = 0;
 }
 
-void UIPanel::render(sf::RenderWindow &window) const {
+void UIPanel::render(sf::RenderWindow &window) const{
     window.draw(background);
     window.draw(text);
 }
 
 size_t UIPanel::getScore() const {
     return score;
+}
+
+void UIPanel::setGameOverText(){
+    text.setString("GAME OVER!");
+    text.setCharacterSize(30);
 }

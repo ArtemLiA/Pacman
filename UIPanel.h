@@ -15,6 +15,7 @@ public:
     void resetScore();
     void render(sf::RenderWindow& window) const;
     size_t getScore() const;
+    void setGameOverText();
 };
 
 

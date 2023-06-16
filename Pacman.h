@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <list>
 #include "Entity.h"
 #include "Field.h"
 #include "Cell.h"
@@ -17,8 +18,10 @@ public:
     void updatePosition(float elapsedTime) override;
     void update(float elapsedTime, std::vector<Cell*>& cells);
     void render(sf::RenderWindow& window) override;
-    sf::Vector2f getPacmanPosition() const;
     Direction getPacmanDirection() const;
+
+    sf::Vector2f getPacmanPosition() const;
+    sf::FloatRect getGlobalBounds() const;
 private:
     sf::Vector2f getDirectionMove() const;
     bool checkDirectionCollision(std::vector<Cell*>& cells) const;

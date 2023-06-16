@@ -2,7 +2,6 @@
 #include "Game.h"
 #include "AbstractGhostFactory.h"
 
-
 Game::Game() {
     ClydeFactory clydeFactory;
     PinkyFactory pinkyFactory;
@@ -54,6 +53,12 @@ Game::Game() {
             }
         }
     }
+
+    activeState = new ActiveState(this);
+    gameOverState = new GameOverState(this);
+    currentGameState = activeState;
+
+
     // create factory AbstractGhostFactory* ghostFactory;
     // read the text file with maze and positions of entities
     //if x - create wall and add into walls
@@ -78,12 +83,26 @@ Pacman Game::getPacman() {
 }
 
 void Game::updateGame(float elapsedTime) {
-    pacman->update(123, cells);
+    pacman->update(0.005, cells);
+    uiPanel->increaseScore(1);
+
+    PacmanChecker pc;
+    if (pc.isPacmanCollide(pacman, ghosts)){
+        uiPanel->resetScore();
+        uiPanel->setGameOverText();
+        endGame();
+    }
+
     //for (auto ghost: ghosts){
     //    ghost->updatePosition(elapsedTime);
     //}
 }
 void Game::render(sf::RenderWindow& window) const {
+    if (currentGameState->isGameOverState()){
+        uiPanel->render(window);
+        return;
+    }
+
     for (auto cell: cells){
         cell->render(window);
     }
@@ -109,8 +128,43 @@ Game::~Game() {
     }
     delete pacman;
     delete uiPanel;
+    delete activeState;
+    delete gameOverState;
+}
+
+void Game::setGameState(GameState *newState){
+    currentGameState = newState;
+}
+
+ActiveState* Game::getActiveState() {
+    return activeState;
+}
+
+GameOverState* Game::getGameOverState() {
+    return gameOverState;
+}
+
+void Game::endGame() {
+    currentGameState->endGame();
 }
 
 
-	
 
+
+GameState::GameState(Game *pGame): game(pGame){};
+
+
+ActiveState::ActiveState(Game *pGame): GameState(pGame){};
+void ActiveState::endGame() {
+    game->setGameState(game->getGameOverState());
+}
+bool ActiveState::isGameOverState() {
+    return false;
+}
+
+
+GameOverState::GameOverState(Game *pGame): GameState(pGame) {};
+void GameOverState::endGame() {};
+bool GameOverState::isGameOverState() {
+    return true;
+}

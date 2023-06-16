@@ -93,6 +93,10 @@ sf::Vector2f Ghost::getChaseScatterPosition(){
     return strategy->getChaseScatterPosition();
 }
 
+sf::FloatRect Ghost::getGlobalBounds() const{
+    return shape.getGlobalBounds();
+}
+
 
 //GHOST STATE
 GhostState::GhostState(Ghost* pGhost) {
@@ -373,5 +377,14 @@ sf::Vector2f InkyStrategy::getChasePosition() {
 
 sf::Vector2f InkyStrategy::getChaseScatterPosition() {
     float radius = ghost->getRadius();
-    return {1000 - 2 * radius, 800 - 2 * radius};
+    return Field::lower_right;
+}
+
+bool PacmanChecker::isPacmanCollide(const Pacman *pacman, const std::vector<Ghost *> ghosts) {
+    for (auto ghost: ghosts){
+        if (ghost->getGlobalBounds().intersects(pacman->getGlobalBounds())){
+            return true;
+        }
+    }
+    return false;
 }

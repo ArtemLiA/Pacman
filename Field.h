@@ -33,12 +33,12 @@ struct Field{
             "Soo#o#ooooooooooo#o#ooS",
             "#oo#o#ooooooooooo#o#oo#",
             "#oo#o#o#########o#o#oo#",
-            "#oo#oSo#oo#T#oo#oSo#oo#",
-            "#oo#oSo#oo###oo#oSo#oo#",
+            "#oo#oSo#o# T #o#oSo#oo#",
+            "#oo#oSo#o#####o#oSo#oo#",
             "#oo#o#o#   M   #o#o#oo#",
             "#oo#o#oS       So#o#oo#",
             "Soo#o#ooooooooooo#o#ooS",
-            "#oo#S###### ######S#oo#",
+            "#oo#S######S######S#oo#",
             "#IoooooooooooooooooooC#",
             "####S#############S####"
     };
