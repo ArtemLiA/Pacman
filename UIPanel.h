@@ -17,6 +17,3 @@ public:
     size_t getScore() const;
     void setGameOverText();
 };
-
-
-//C:\Users\lyaho\CS_Projects\C++\Games\Pacman;
