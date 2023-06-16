@@ -8,10 +8,12 @@
 #include "Cell.h"
 #include "Ghost.h"
 #include "AbstractGhostFactory.h"
+#include "UIPanel.h"
 
 
 class Game{
 protected:
+    UIPanel* uiPanel;
     Field game_field;
 
 	std::vector<Entity*> objects;

@@ -57,11 +57,11 @@ void Pacman::render(sf::RenderWindow &window){
     window.draw(shape);
 }
 
-sf::Vector2f Pacman::getPacmanPosition(){
+sf::Vector2f Pacman::getPacmanPosition() const{
     return position;
 }
 
-Direction Pacman::getPacmanDirection(){
+Direction Pacman::getPacmanDirection() const{
     return direction;
 }
 

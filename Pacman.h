@@ -17,9 +17,9 @@ public:
     void updatePosition(float elapsedTime) override;
     void update(float elapsedTime, std::vector<Cell*>& cells);
     void render(sf::RenderWindow& window) override;
-    sf::Vector2f getPacmanPosition();
-    Direction getPacmanDirection();
-protected:
+    sf::Vector2f getPacmanPosition() const;
+    Direction getPacmanDirection() const;
+private:
     sf::Vector2f getDirectionMove() const;
     bool checkDirectionCollision(std::vector<Cell*>& cells) const;
 };

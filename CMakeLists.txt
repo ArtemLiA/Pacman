@@ -12,7 +12,7 @@ add_executable(Pacman main.cpp
         Game.h Game.cpp
         Ghost.h Ghost.cpp
         Pacman.h Pacman.cpp
-        Cell.h AbstractGhostFactory.h Field.h AbstractGhostFactory.cpp Cell.cpp)
+        Cell.h AbstractGhostFactory.h Field.h AbstractGhostFactory.cpp Cell.cpp UIPanel.cpp UIPanel.h)
 
 set(SFML_DIR "C:/Users/lyaho/CS_Projects/C++/lib/SFML/GCC 7.3.0 MinGW (SEH) - 64-bit/SFML-2.5.1/lib/cmake/SFML")
 target_link_libraries(Pacman sfml-graphics)

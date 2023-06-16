@@ -15,8 +15,8 @@ Game::Game() {
     Inky* new_inky = nullptr;
 
     pacman = new Pacman(0, 0);
-    float bs = Field::f_block_size;
 
+    float bs = Field::f_block_size;
     float ghost_size = pacman->getPacmanRadius();
 
     for (size_t i = 0; i < Field::height; i++){
@@ -48,6 +48,9 @@ Game::Game() {
             }
             if (game_field.maze[i][j] == 'S'){
                 objects.push_back(new SuperPacGum(bs * j, bs * i, bs));
+            }
+            if (game_field.maze[i][j] == 'T'){
+                uiPanel = new UIPanel(bs * j, bs * i, bs);
             }
         }
     }
@@ -91,6 +94,7 @@ void Game::render(sf::RenderWindow& window) const {
         ghost->render(window);
     }
     pacman->render(window);
+    uiPanel->render(window);
 }
 
 Game::~Game() {
@@ -104,6 +108,7 @@ Game::~Game() {
         delete cell;
     }
     delete pacman;
+    delete uiPanel;
 }
 
 
